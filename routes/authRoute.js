@@ -14,10 +14,6 @@ const {
     searchUser,
 } = require("../controller/authController");
 
-const {
-    register,
-    login
-} = require("../controller/passwordAuthController");
 
 const authMiddleware = require("../middleware/authMiddleware");
 
