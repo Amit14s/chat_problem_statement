@@ -1,4 +1,5 @@
-
+const groupRoute = require("./routes/groupRoute");
+const conversationRoute = require("./routes/conversationRoute");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -54,6 +55,8 @@ app.get("/health", (req, res) => {
 app.use("/auth", authRoute);
 app.use("/chats", chatRoute);
 app.use("/status", statusRoute);
+app.use("/groups", groupRoute);
+app.use("/conversations", conversationRoute);
 
 const PORT = process.env.PORT || 5000;
 

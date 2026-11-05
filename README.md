@@ -139,3 +139,45 @@ Messages support:
 ### Message Reactions
 
 Reactions are embedded inside the message document and contain the reacting user's ID and emoji.
+
+## Private and Group Conversations
+
+The application supports private and group conversations.
+
+### Private Conversations
+
+- Create one-to-one conversations.
+- Prevent duplicate private conversations.
+- Retrieve previous conversations.
+- Display participant information.
+- Maintain conversation timestamps.
+
+### Group Conversations
+
+- Create groups with multiple members.
+- Automatically assign the creator as group admin.
+- Add new members.
+- Remove members.
+- Retrieve group details.
+- Display group participants and administrators.
+
+### Group Authorization
+
+- Only authenticated users can access group APIs.
+- Only group members can view group details.
+- Only group administrators can add members.
+- Only administrators can remove other members.
+- Members can leave groups themselves.
+- Group creators cannot be removed.
+
+### Conversation APIs
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /conversations/create | Create private chat |
+| GET | /conversations | List conversations |
+| POST | /groups/create | Create group |
+| GET | /groups | List groups |
+| GET | /groups/:groupId | Group details |
+| POST | /groups/:groupId/members | Add member |
+| DELETE | /groups/:groupId/members/:memberId | Remove member |
