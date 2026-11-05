@@ -1,10 +1,4 @@
 node_modules
 .env
-.env.*
-logs
-*.log
-dist
-build
-coverage
-.vscode
+uploads
 .DS_Store
