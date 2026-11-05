@@ -181,3 +181,94 @@ The application supports private and group conversations.
 | GET | /groups/:groupId | Group details |
 | POST | /groups/:groupId/members | Add member |
 | DELETE | /groups/:groupId/members/:memberId | Remove member |
+
+## Real-Time Messaging APIs
+
+### Messaging Features
+
+- Send private and group messages.
+- Store messages in MongoDB.
+- Prevent duplicate messages using clientMessageId.
+- Fetch message history with pagination.
+- Edit sent messages.
+- Delete messages.
+- Add emoji reactions.
+- Track message delivery and read status.
+- Maintain last message information.
+- Update unread message counts.
+
+### Message Pagination
+
+Messages are fetched using page and limit query parameters.
+
+Example:
+
+GET /chats/conversations/CONVERSATION_ID/messages?page=1&limit=30
+
+Maximum page size: 50 messages.
+
+### Message Status
+
+Private messages support:
+- Sent
+- Delivered
+- Read
+
+Group messages maintain individual read receipts using readBy.
+
+### Duplicate Message Prevention
+
+Each message can contain a unique clientMessageId.
+
+A MongoDB unique compound index prevents the same sender from storing duplicate messages with the same clientMessageId.
+
+### Message Authorization
+
+- Only conversation members can fetch messages.
+- Only the original sender can edit a message.
+- Only the original sender can delete a message.
+- Only conversation members can add reactions.
+- Message history is loaded in paginated batches.
+
+## Real-Time Communication
+
+Socket.IO is used for real-time messaging and user presence.
+
+### Socket Features
+
+- JWT-based socket authentication.
+- Authorized conversation room joining.
+- Real-time private and group message delivery.
+- Online/offline presence tracking.
+- Last-seen updates.
+- Typing indicators.
+- Message delivery receipts.
+- Message read receipts.
+- Offline message synchronization.
+- Automatic conversation room joining after reconnection.
+
+### Socket Security
+
+Every socket connection is authenticated using JWT.
+
+Users can only join conversations in which they are registered participants.
+
+### Offline Message Handling
+
+Messages are stored in MongoDB even when recipients are offline.
+
+When a user reconnects, pending private messages are marked as delivered.
+
+### Socket Events
+
+| Event | Description |
+|---|---|
+| connected | Connection established |
+| receive_message | New message received |
+| user_online | User online |
+| user_offline | User offline |
+| typing | Typing started |
+| stop_typing | Typing stopped |
+| message_status_update | Delivery/read status updated |
+| conversation_read | Mark messages as read |
+| join_conversation | Join conversation room |

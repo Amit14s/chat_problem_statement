@@ -46,6 +46,15 @@ const messageSchema = new mongoose.Schema({
         enum: ["send", "sent", "delivered", "read"],
         default: "send"
     },
+    deliveredTo: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user"
+}],
+
+readBy: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user"
+}],
 
     reactions: [{
         user: {

@@ -1,29 +1,29 @@
-const groupRoute = require("./routes/groupRoute");
-const conversationRoute = require("./routes/conversationRoute");
+
 const express = require("express");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const dotenv = require("dotenv");
 const http = require("http");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
 const connectToDB = require("./config/connect_to_db");
+const initializeSocket = require("./services/soketService");
+
 const authRoute = require("./routes/authRoute");
 const chatRoute = require("./routes/chatRoute");
 const statusRoute = require("./routes/statusRoute");
-const initializeSocket = require("./services/soketService");
+const groupRoute = require("./routes/groupRoute");
+const conversationRoute = require("./routes/conversationRoute");
 
 const app = express();
 const server = http.createServer(app);
 
-const allowedOrigins = [
-    process.env.FRONTEND_URL,
-    process.env.FRONTEND_URL2
-].filter(Boolean);
-
 app.use(cors({
-    origin: allowedOrigins,
+    origin: [
+        process.env.FRONTEND_URL,
+        process.env.FRONTEND_URL2
+    ].filter(Boolean),
     credentials: true
 }));
 
@@ -42,7 +42,10 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-    res.send("Real-Time Chat Server Running");
+    res.json({
+        success: true,
+        message: "Real-Time Chat API Running"
+    });
 });
 
 app.get("/health", (req, res) => {
@@ -57,6 +60,15 @@ app.use("/chats", chatRoute);
 app.use("/status", statusRoute);
 app.use("/groups", groupRoute);
 app.use("/conversations", conversationRoute);
+
+app.use((err, req, res, next) => {
+    console.error(err);
+
+    res.status(err.status || 500).json({
+        success: false,
+        message: err.message || "Internal server error"
+    });
+});
 
 const PORT = process.env.PORT || 5000;
 
